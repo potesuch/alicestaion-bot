@@ -6,11 +6,11 @@ from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.formatting import as_list
 
-from ..aioquasar_api import YandexSession
-from ..aioquasar_api import YandexQuasar  # Сделать в одну строку
+from aioquasar_api import YandexSession
+from aioquasar_api import YandexQuasar  # Сделать в одну строку
 
-from ..states import BaseStates
-from ..keyboards.for_authorized import get_authorized_kb
+from states import BaseStates
+from keyboards.for_authorized import get_authorized_kb
 
 router = Router()
 
@@ -62,7 +62,7 @@ async def code_auth(message: Message, state: FSMContext):
     if code.isnumeric():
         async with ClientSession() as session:
             data = await state.get_data()
-            cookies = data.get('cookies')
+            cookies = str(pickle.dumps(session.cookie_jar._cookies))
             auth_payload = data.get('auth_payload')
             session.cookie_jar._cookies = cookies
             ya_session = YandexSession(session)

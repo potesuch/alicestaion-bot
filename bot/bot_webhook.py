@@ -5,8 +5,8 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 
-from .data import config
-from .handlers import unauthorized, authorized, conversation
+from data import config
+from handlers import unauthorized, authorized, conversation
 
 
 async def on_startup(bot: Bot):

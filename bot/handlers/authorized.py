@@ -4,9 +4,9 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 
-from ..aioquasar_api import YandexQuasar
-from ..states import BaseStates
-from ..keyboards.for_conversation import get_conversation_kb
+from aioquasar_api import YandexQuasar
+from states import BaseStates
+from keyboards.for_conversation import get_conversation_kb
 
 router = Router()
 

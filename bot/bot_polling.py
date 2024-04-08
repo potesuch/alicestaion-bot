@@ -3,8 +3,8 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 
-from .data import config
-from .handlers import unauthorized, authorized, conversation
+from data import config
+from handlers import unauthorized, authorized, conversation
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s | %(levelname)s : %(message)s')
