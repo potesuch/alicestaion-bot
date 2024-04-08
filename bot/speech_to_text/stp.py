@@ -1,6 +1,6 @@
 import assemblyai as aai
 
-from ..data import config
+from data import config
 
 aai.settings.api_key = config.ASSEMBLYAI_TOKEN
 config = aai.TranscriptionConfig(language_code='ru')

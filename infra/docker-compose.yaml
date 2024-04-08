@@ -24,7 +24,7 @@ services:
     volumes:
       - /var/lib/redis/data/
   bot:
-    build: .
+    build: ../bot
     restart: always
     ports:
       - "8080:8080"
