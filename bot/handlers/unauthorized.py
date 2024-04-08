@@ -62,7 +62,7 @@ async def code_auth(message: Message, state: FSMContext):
     if code.isnumeric():
         async with ClientSession() as session:
             data = await state.get_data()
-            cookies = data.get('cookies')
+            cookies = pickle.loads(eval(data.get('cookies')))
             auth_payload = data.get('auth_payload')
             session.cookie_jar._cookies = cookies
             ya_session = YandexSession(session)
