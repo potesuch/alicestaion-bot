@@ -8,11 +8,11 @@ from aiogram.types import Message
 from aiogram.utils.formatting import as_list
 from aiogram.fsm.context import FSMContext
 
-from ..aioquasar_api import YandexQuasar
-from ..speech_to_text import stp
+from aioquasar_api import YandexQuasar
+from speech_to_text import stp
 
-from ..states import BaseStates
-from ..keyboards.for_authorized import get_authorized_kb
+from states import BaseStates
+from keyboards.for_authorized import get_authorized_kb
 
 router = Router()
 
