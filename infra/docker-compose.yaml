@@ -19,6 +19,8 @@ services:
       - ./ngrok/ngrok.yml:/etc/ngrok.yml
     depends_on:
       - nginx
+    env_file:
+      - ./.env
   redis:
     image: redis:7.2.4-alpine
     volumes:

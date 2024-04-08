@@ -1,4 +1,3 @@
 venv
 infra/.env
-infra/ngrok/ngrok.yml
 .idea
