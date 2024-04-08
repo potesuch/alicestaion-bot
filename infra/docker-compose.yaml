@@ -6,19 +6,19 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf/
   ngrok:
-      image: ngrok/ngrok:latest
-      ports:
-        - "4040:4040"
-      restart: unless-stopped
-      command:
-        - "start"
-        - "--all"
-        - "--config"
-        - "/etc/ngrok.yml"
-      volumes:
-        - ./ngrok/ngrok.yml:/etc/ngrok.yml
-      depends_on:
-        - nginx
+    image: ngrok/ngrok:latest
+    ports:
+      - "4040:4040"
+    restart: unless-stopped
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    volumes:
+      - ./ngrok/ngrok.yml:/etc/ngrok.yml
+    depends_on:
+      - nginx
   redis:
     image: redis:7.2.4-alpine
     volumes:
