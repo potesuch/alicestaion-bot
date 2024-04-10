@@ -40,7 +40,7 @@ jobs:
             echo REDIS_DB=${{ secrets.REDIS_DB }} >> .env
             echo WEB_SERVER_HOST=${{ secrets.WEB_SERVER_HOST }} >> .env
             echo WEB_SERVER_PORT=${{ secrets.WEB_SERVER_PORT }} >> .env
-            echo NGROK_AUTH_TOKEN=${{ secrets.NGROK_AUTH_TOKEN }} >> .env
+            echo NGROK_AUTHTOKEN=${{ secrets.NGROK_AUTH_TOKEN }} >> .env
             echo NGROK_HOST=${{ secrets.NGROK_HOST }} >> .env
             echo NGROK_PORT=${{ secrets.NGROK_PORT }} >> .env
             echo WEBHOOK_PATH=${{ secrets.WEBHOOK_PATH }} >> .env
