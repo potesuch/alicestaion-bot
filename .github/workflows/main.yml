@@ -31,12 +31,9 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            pwd
             cd alicestation-bot/
-            pwd
             touch .env
-            ls
-            echo BOT_TOKEN=${{ secrets.BOT_TOKEN }} > .env
+            echo BOT_TOKEN=${{ secrets.BOT_TOKEN }} >> .env
             echo ASSEMBLYAI_TOKEN=${{ secrets.ASSEMBLYAI_TOKEN }}
             echo REDIS_HOST=${{ secrets.REDIS_HOST }}
             echo REDIS_PORT=${{ secrets.REDIS_PORT }}
