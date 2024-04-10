@@ -33,17 +33,17 @@ jobs:
           script: |
             cd alicestation-bot/
             touch .env
-            echo BOT_TOKEN=${{ secrets.BOT_TOKEN }} >> .env
-            echo ASSEMBLYAI_TOKEN=${{ secrets.ASSEMBLYAI_TOKEN }}
-            echo REDIS_HOST=${{ secrets.REDIS_HOST }}
-            echo REDIS_PORT=${{ secrets.REDIS_PORT }}
-            echo REDIS_DB=${{ secrets.REDIS_DB }}
-            echo WEB_SERVER_HOST=${{ secrets.WEB_SERVER_HOST }}
-            echo WEB_SERVER_PORT=${{ secrets.WEB_SERVER_PORT }}
-            echo NGROK_AUTH_TOKEN=${{ secrets.NGROK_AUTH_TOKEN }}
-            echo NGROK_HOST=${{ secrets.NGROK_HOST }}
-            echo NGROK_PORT=${{ secrets.NGROK_PORT }}
-            echo WEBHOOK_PATH=${{ secrets.WEBHOOK_PATH }}
+            echo BOT_TOKEN=${{ secrets.BOT_TOKEN }} > .env
+            echo ASSEMBLYAI_TOKEN=${{ secrets.ASSEMBLYAI_TOKEN }} >> .env
+            echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
+            echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
+            echo REDIS_DB=${{ secrets.REDIS_DB }} >> .env
+            echo WEB_SERVER_HOST=${{ secrets.WEB_SERVER_HOST }} >> .env
+            echo WEB_SERVER_PORT=${{ secrets.WEB_SERVER_PORT }} >> .env
+            echo NGROK_AUTH_TOKEN=${{ secrets.NGROK_AUTH_TOKEN }} >> .env
+            echo NGROK_HOST=${{ secrets.NGROK_HOST }} >> .env
+            echo NGROK_PORT=${{ secrets.NGROK_PORT }} >> .env
+            echo WEBHOOK_PATH=${{ secrets.WEBHOOK_PATH }} >> .env
             sudo docker compose down
             sudo docker compose pull bot_alice
             sudo docker compose up -d
@@ -58,4 +58,3 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: ${{ github.workflow }} успешно выполнен!
-
