@@ -8,5 +8,5 @@ tunnels:
     addr: ssh-server:22
     proto: tcp
   app-foo:
-    addr: nginx:80
+    addr: nginx_alice:80
     proto: http

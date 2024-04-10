@@ -1,14 +1,14 @@
 services:
-  nginx:
+  nginx_alice:
     image: nginx:1.25.4-alpine
     ports:
-      - "80:80"
+      - "81:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf/
-  ngrok:
+  ngrok_alice:
     image: ngrok/ngrok:latest
     ports:
-      - "4040:4040"
+      - "4041:4040"
     restart: unless-stopped
     command:
       - "start"
@@ -21,17 +21,22 @@ services:
       - nginx
     env_file:
       - ./.env
-  redis:
+  redis_alice:
     image: redis:7.2.4-alpine
+    ports:
+      - "6380:6379"
     volumes:
-      - /var/lib/redis/data/
-  bot:
-    build: ../bot
+      - redis_storage:/var/lib/redis/data/
+  bot_alice:
+    image: potesuch/alicestation-bot
     restart: always
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - redis
       - ngrok
     env_file:
       - ./.env
+
+volumes:
+  redis_storage:
