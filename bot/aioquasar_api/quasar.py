@@ -3,7 +3,17 @@ import re
 URL_USER = 'https://iot.quasar.yandex.ru/m/user'
 URL_V3_USER = 'https://iot.quasar.yandex.ru/m/v3/user'
 
+
 def parse_scenario(data: dict) -> dict:
+    """
+    Парсит сценарий из предоставленного словаря данных.
+
+    Аргументы:
+        data (dict): Словарь данных, содержащий информацию о сценарии.
+
+    Возвращает:
+        dict: Словарь с разобранными деталями сценария.
+    """
     result = {
         k: v
         for k, v in data.items()
@@ -15,6 +25,15 @@ def parse_scenario(data: dict) -> dict:
 
 
 def parse_trigger(data: dict) -> dict:
+    """
+    Парсит триггер из предоставленного словаря данных.
+
+    Аргументы:
+        data (dict): Словарь данных, содержащий информацию о триггере.
+
+    Возвращает:
+        dict: Словарь с разобранными деталями триггера.
+    """
     result = {k: v for k, v in data.items() if k == "filters"}
 
     value = data["trigger"]["value"]
@@ -31,6 +50,15 @@ def parse_trigger(data: dict) -> dict:
 
 
 def parse_step(data: dict) -> dict:
+    """
+    Парсит шаг из предоставленного словаря данных.
+
+    Аргументы:
+        data (dict): Словарь данных, содержащий информацию о шаге.
+
+    Возвращает:
+        dict: Словарь с разобранными деталями шага.
+    """
     params = data["parameters"]
     return {
         "type": data["type"],
@@ -42,6 +70,15 @@ def parse_step(data: dict) -> dict:
 
 
 def parse_device(data: dict) -> dict:
+    """
+    Парсит устройство из предоставленного словаря данных.
+
+    Аргументы:
+        data (dict): Словарь данных, содержащий информацию об устройстве.
+
+    Возвращает:
+        dict: Словарь с разобранными деталями устройства.
+    """
     return {
         "id": data["id"],
         "capabilities": [
@@ -52,17 +89,29 @@ def parse_device(data: dict) -> dict:
 
 
 class YandexQuasar:
+    """
+    Класс для взаимодействия с API Yandex Quasar.
+
+    Arguments:
+        session: Сессия для выполнения HTTP-запросов.
+    """
 
     def __init__(self, session):
         self.session = session
 
     async def _update_csrf_token(self):
+        """
+        Обновляет CSRF-токен, необходимый для выполнения запросов.
+        """
         r = await self.session.get('https://yandex.ru/quasar')
         data = await r.text()
         m = re.search('"csrfToken2":"(.+?)"', data)
         self.csrf_token = m[1]
 
     async def get(self):
+        """
+        Получает список устройств пользователя.
+        """
         r = await self.session.get(f'{URL_V3_USER}/devices')
         try:
             data = await r.json()
@@ -77,6 +126,9 @@ class YandexQuasar:
         await self.get_scenarios()
 
     async def get_scenarios(self):
+        """
+        Получает список сценариев пользователя.
+        """
         r = await self.session.get(f'{URL_USER}/scenarios')
         data = await r.json()
         assert data['status'] == 'ok', data
@@ -84,11 +136,23 @@ class YandexQuasar:
 
     @property
     def speakers(self):
+        """
+        Возвращает список колонок пользователя.
+
+        Возвращает:
+            list: Список колонок.
+        """
         return [
             d for d in self.devices if d.get('quasar_info') and d.get('capabilities')
         ]
 
     async def create_scenario(self, speaker_id):
+        """
+        Создает новый сценарий для указанной колонки.
+
+        Аргументы:
+            speaker_id: Идентификатор колонки.
+        """
         payload = {
             'name': f'bot_command_{speaker_id}',
             'icon': 'home',
@@ -120,6 +184,13 @@ class YandexQuasar:
         assert data['status'] == 'ok', data
 
     async def update_scenario(self, scenario_id, command):
+        """
+        Обновляет команду указанного сценария.
+
+        Аргументы:
+            scenario_id: Идентификатор сценария.
+            command: Новая команда для обновления.
+        """
         r = await self.session.get(f'{URL_V3_USER}/scenarios/{scenario_id}/edit')
         data = await r.json()
         assert data['status'] == 'ok', data
@@ -132,6 +203,12 @@ class YandexQuasar:
         assert data['status'] == 'ok', data
 
     async def exec_scenario(self, scenario_id):
+        """
+        Выполняет указанный сценарий.
+
+        Аргументы:
+            scenario_id: Идентификатор сценария.
+        """
         await self._update_csrf_token()
         r = await self.session.post(f'{URL_USER}/scenarios/{scenario_id}/actions',
                                     headers={'x-csrf-token': self.csrf_token})

@@ -2,6 +2,14 @@ import re
 
 
 class YandexSession:
+    """
+    Класс для работы с сессиями Яндекса.
+
+    Arguments:
+        session: Сессия для выполнения HTTP-запросов.
+        username (str, optional): Имя пользователя для авторизации.
+        password (str, optional): Пароль для авторизации.
+    """
 
     def __init__(self, session, username=None, password=None):
         self.session = session
@@ -9,6 +17,12 @@ class YandexSession:
         self.password = password
 
     async def login(self):
+        """
+        Выполняет авторизацию пользователя.
+
+        Возвращает:
+            tuple: Кортеж с данными авторизации и состоянием авторизации.
+        """
         r = await self.session.get(
                 'https://passport.yandex.ru/auth'
         )
@@ -53,6 +67,16 @@ class YandexSession:
         return auth_payload, state
 
     async def code_auth(self, auth_payload, code):
+        """
+        Подтверждает авторизацию с использованием кода.
+
+        Аргументы:
+            auth_payload (dict): Данные авторизации.
+            code (str): Код для подтверждения.
+
+        Возвращает:
+            str: Статус авторизации.
+        """
         r = await self.session.post(
             'https://passport.yandex.ru/registration-validations/auth/challenge/commit',
             data={

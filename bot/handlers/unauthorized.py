@@ -17,12 +17,26 @@ router = Router()
 
 @router.message(Command('start'))
 async def cmd_start(message: Message, state: FSMContext):
+    """
+    Обрабатывает команду /start и запрашивает логин и пароль.
+
+    Args:
+        message (Message): Сообщение с выбором станции.
+        state (FSMContext): Контекст состояния FSM.
+    """
     await state.set_state(BaseStates.unauthorized)
     await message.answer('Введите логин и пароль в формате "login:password":')
 
 
 @router.message(BaseStates.unauthorized, F.text)
 async def login_password(message: Message, state: FSMContext):
+    """
+    Обрабатывает ввод логина и пароля, выполняет авторизацию.
+
+    Args:
+        message (Message): Сообщение с выбором станции.
+        state (FSMContext): Контекст состояния FSM.
+    """
     if ':' in message.text:
         async with ClientSession() as session:
             login, password = message.text.split(':')
@@ -58,6 +72,13 @@ async def login_password(message: Message, state: FSMContext):
 
 @router.message(BaseStates.code_verification, F.text)
 async def code_auth(message: Message, state: FSMContext):
+    """
+    Обрабатывает ввод кода подтверждения.
+
+    Args:
+        message (Message): Сообщение с выбором станции.
+        state (FSMContext): Контекст состояния FSM.
+    """
     code = message.text
     if code.isnumeric():
         async with ClientSession() as session:

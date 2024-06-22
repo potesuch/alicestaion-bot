@@ -7,7 +7,6 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 ASSEMBLYAI_TOKEN = os.getenv('ASSEMBLYAI_TOKEN')
 
-# Redis
 REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
 REDIS_PORT = os.getenv('REDIS_PORT', 6379)
 REDIS_DB = os.getenv('REDIS_DB', 0)

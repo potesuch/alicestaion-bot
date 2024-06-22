@@ -3,6 +3,9 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 
 def get_authorized_kb(speaker_cnt) -> ReplyKeyboardMarkup:
+    """
+    Возвращает клавиатуру для выбора устройства.
+    """
     kb = ReplyKeyboardBuilder()
     for i in range(speaker_cnt):
         kb.add(KeyboardButton(text=str(i+1)))

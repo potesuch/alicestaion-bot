@@ -8,5 +8,8 @@ transcriber = aai.Transcriber(config=config)
 
 
 async def transcribe(url):
+    """
+    Транскрибирует аудиофайл по указанному URL.
+    """
     transcript = transcriber.transcribe(url)
     return transcript.text

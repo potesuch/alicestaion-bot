@@ -13,6 +13,13 @@ router = Router()
 
 @router.message(BaseStates.authorized, F.text.lower()=='выйти из аккаунта')
 async def logout(message: Message, state: FSMContext):
+    """
+    Обрабатывает команду выхода из аккаунта.
+
+    Args:
+        message (Message): Сообщение с командой.
+        state (FSMContext): Контекст состояния FSM.
+    """
     await state.clear()
     await message.answer('Вы вышли из аккаунта, чтобы снова авторизоваться '
                          'нажмите /start')
@@ -20,6 +27,13 @@ async def logout(message: Message, state: FSMContext):
 
 @router.message(BaseStates.authorized, F.text)
 async def select_station(message: Message, state: FSMContext):
+    """
+    Обрабатывает выбор станции для взаимодействия.
+
+    Args:
+        message (Message): Сообщение с выбором станции.
+        state (FSMContext): Контекст состояния FSM.
+    """
     async with ClientSession() as session:
         data = await state.get_data()
         cookies = pickle.loads(eval(data.get('cookies')))

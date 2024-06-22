@@ -10,6 +10,14 @@ from handlers import unauthorized, authorized, conversation
 
 
 async def on_startup(bot: Bot):
+    """
+    Функция, вызываемая при старте бота.
+
+    Настраивает вебхук для бота Telegram.
+
+    Args:
+        bot (Bot): Экземпляр бота Telegram.
+    """
     if config.BASE_WEBHOOK_URL is not None:
         await bot.set_webhook(f'{config.BASE_WEBHOOK_URL}{config.WEBHOOK_PATH}')
     else:
@@ -20,12 +28,28 @@ async def on_startup(bot: Bot):
         await bot.set_webhook(f'{ngrok_url}{config.WEBHOOK_PATH}')
 
 
-
 async def on_shutdown(bot: Bot):
+    """
+    Функция, вызываемая при выключении бота.
+
+    Удаляет вебхук у бота Telegram.
+
+    Args:
+        bot (Bot): Экземпляр бота Telegram.
+    """
     await bot.delete_webhook()
 
 
 def main():
+    """
+    Основная функция для запуска бота в режиме вебхук.
+
+    Инициализирует диспетчер бота, устанавливает вебхук или запускает локальный туннель ngrok для вебхука.
+    Запускает веб-сервер с использованием aiohttp.
+
+    Raises:
+        RuntimeError: Ошибка запуска веб-сервера.
+    """
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s | %(levelname)s : %(message)s')
     storage = RedisStorage.from_url(f'redis://{config.REDIS_HOST}:'

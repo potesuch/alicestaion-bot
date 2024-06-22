@@ -18,6 +18,14 @@ router = Router()
 
 @router.message(BaseStates.in_conv, F.text.lower()=='выход')
 async def conversation_exit(message: Message, state: FSMContext):
+    """
+    Обрабатывает выход из режима общения с устройством.
+    Возвращает пользователя к выбору устройства.
+
+    Args:
+        message (Message): Сообщение с выбором станции.
+        state (FSMContext): Контекст состояния FSM.
+    """
     async with ClientSession() as session:
         data = await state.get_data()
         cookies = pickle.loads(eval(data.get('cookies')))
@@ -39,6 +47,13 @@ async def conversation_exit(message: Message, state: FSMContext):
 
 @router.message(BaseStates.in_conv, F.text)
 async def conversation_message(message: Message, state: FSMContext):
+    """
+    Обрабатывает текстовые команды для устройства.
+
+    Args:
+        message (Message): Сообщение с выбором станции.
+        state (FSMContext): Контекст состояния FSM.
+    """
     async with ClientSession() as session:
         data = await state.get_data()
         cookies = pickle.loads(eval(data.get('cookies')))
@@ -53,21 +68,28 @@ async def conversation_message(message: Message, state: FSMContext):
 
 @router.message(BaseStates.in_conv, F.voice)
 async def conversation_voice(message: Message, state: FSMContext):
-        with tempfile.TemporaryDirectory() as tempdir:
-            voice_path = os.path.join(tempdir, f'{message.voice.file_id}.mp3')
-            voice = await message.bot.download(message.voice)
-            voice_mp3 = AudioSegment.from_ogg(voice)
-            voice_mp3.export(voice_path, format='mp3')
-            command = await stp.transcribe(voice_path)
-        if command:
-            async with ClientSession() as session:
-                data = await state.get_data()
-                cookies = pickle.loads(eval(data.get('cookies')))
-                scenario_id = data.get('scenario_id')
-                session.cookie_jar._cookies = cookies
-                ya_quasar = YandexQuasar(session)
-                await ya_quasar.update_scenario(scenario_id, command)
-                await ya_quasar.exec_scenario(scenario_id)
-                await message.answer('Выполнено')
-        else:
-            await message.answer('Голосовое не распознано')
+    """
+    Обрабатывает голосовые команды для устройства.
+
+    Args:
+        message (Message): Сообщение с выбором станции.
+        state (FSMContext): Контекст состояния FSM.
+    """
+    with tempfile.TemporaryDirectory() as tempdir:
+        voice_path = os.path.join(tempdir, f'{message.voice.file_id}.mp3')
+        voice = await message.bot.download(message.voice)
+        voice_mp3 = AudioSegment.from_ogg(voice)
+        voice_mp3.export(voice_path, format='mp3')
+        command = await stp.transcribe(voice_path)
+    if command:
+        async with ClientSession() as session:
+            data = await state.get_data()
+            cookies = pickle.loads(eval(data.get('cookies')))
+            scenario_id = data.get('scenario_id')
+            session.cookie_jar._cookies = cookies
+            ya_quasar = YandexQuasar(session)
+            await ya_quasar.update_scenario(scenario_id, command)
+            await ya_quasar.exec_scenario(scenario_id)
+            await message.answer('Выполнено')
+    else:
+        await message.answer('Голосовое не распознано')
