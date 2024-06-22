@@ -32,8 +32,8 @@ AliceStation-bot - это Telegram бот, который позволяет у�
 ### Клонирование репозитория
 
 ``` sh
-git clone https://github.com/your/repository.git
-cd repository
+git clone https://github.com/potesuch/alicestaion-bot.git
+cd alicestation-bot
 ```
 
 ### Настройка конфигурации
